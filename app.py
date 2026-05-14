@@ -27,11 +27,17 @@ def home():
 # -----------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
     if request.method == 'POST':
+
         username = request.form['username']
         password = request.form['password']
 
-        user = User(username=username, password=password)
+        user = User(
+            username=username,
+            password=password
+        )
+
         db.session.add(user)
         db.session.commit()
 
@@ -40,63 +46,3 @@ def register():
     return render_template('register.html')
 
 # -----------------------------
-# LOGIN
-# -----------------------------
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = User.query.filter_by(
-            username=username,
-            password=password
-        ).first()
-
-        if user:
-            session['user'] = username
-            return redirect('/dashboard')
-
-    return render_template('login.html')
-
-# -----------------------------
-# DASHBOARD
-# -----------------------------
-@app.route('/dashboard')
-def dashboard():
-    if 'user' in session:
-        return render_template('dashboard.html')
-
-    return redirect('/login')
-
-# -----------------------------
-# QUIZ PAGE
-# -----------------------------
-@app.route('/quiz')
-def quiz():
-    return render_template('quiz.html')
-
-# -----------------------------
-# RUN APP
-# -----------------------------
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        @app.route('/career')
-def career():
-
-    skills = [
-        "Python",
-        "Machine Learning",
-        "Data Analysis"
-    ]
-
-    if "Machine Learning" in skills:
-        recommendation = "AI Engineer"
-
-    else:
-        recommendation = "Web Developer"
-
-    return recommendation
-
-    app.run(debug=True)
