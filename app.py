@@ -82,5 +82,21 @@ def quiz():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        @app.route('/career')
+def career():
+
+    skills = [
+        "Python",
+        "Machine Learning",
+        "Data Analysis"
+    ]
+
+    if "Machine Learning" in skills:
+        recommendation = "AI Engineer"
+
+    else:
+        recommendation = "Web Developer"
+
+    return recommendation
 
     app.run(debug=True)
