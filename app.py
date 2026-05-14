@@ -1,48 +1,63 @@
-from flask import Flask, render_template, request, redirect, session
-from flask_sqlalchemy import SQLAlchemy
+import streamlit as st
+import pandas as pd
 
-app = Flask(__name__)
-app.secret_key = "secretkey"
+# ----------------------------------
+# PAGE CONFIG
+# ----------------------------------
+st.set_page_config(
+    page_title="AI Learning Platform",
+    page_icon="🎓",
+    layout="wide"
+)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db = SQLAlchemy(app)
+# ----------------------------------
+# SIDEBAR
+# ----------------------------------
+st.sidebar.title("Navigation")
 
-# -----------------------------
-# DATABASE MODEL
-# -----------------------------
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(100))
+menu = st.sidebar.radio(
+    "Go to",
+    [
+        "Home",
+        "Dashboard",
+        "Career Recommendation",
+        "Quiz",
+        "Progress Tracking"
+    ]
+)
 
-# -----------------------------
+# ----------------------------------
 # HOME PAGE
-# -----------------------------
-@app.route('/')
-def home():
-    return render_template('index.html')
+# ----------------------------------
+if menu == "Home":
 
-# -----------------------------
-# REGISTER
-# -----------------------------
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+    st.title("🎓 AI Learning & Career Development Platform")
 
-    if request.method == 'POST':
+    st.write(
+        """
+        This platform helps students and job seekers:
 
-        username = request.form['username']
-        password = request.form['password']
+        ✅ Learn industry skills
+        ✅ Get AI career recommendations
+        ✅ Take quizzes
+        ✅ Track progress
+        ✅ Access educational resources
+        """
+    )
 
-        user = User(
-            username=username,
-            password=password
-        )
+    st.image(
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+        use_container_width=True
+    )
 
-        db.session.add(user)
-        db.session.commit()
+# ----------------------------------
+# DASHBOARD
+# ----------------------------------
+elif menu == "Dashboard":
 
-        return redirect('/login')
+    st.title("📊 Learning Dashboard")
 
-    return render_template('register.html')
+    st.subheader("Your Progress")
 
-# -----------------------------
+    st.progress(70)
+    st.bar_chart(df.set_index("Courses"))
