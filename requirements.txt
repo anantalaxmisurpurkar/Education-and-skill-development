@@ -1,5 +1,5 @@
-Flask
-Flask-SQLAlchemy
+streamlit
 pandas
+numpy
 scikit-learn
 openai
